@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class MybatisplusApplicationTests {
@@ -75,5 +76,11 @@ class MybatisplusApplicationTests {
         for (User user1 : users) {
             System.out.println(user1);
         }
+    }
+
+    @Test
+    void testMyQuery() {
+        Map<String, Object> map = userMapper.selectMapById(1);
+        System.out.println(map);
     }
 }
