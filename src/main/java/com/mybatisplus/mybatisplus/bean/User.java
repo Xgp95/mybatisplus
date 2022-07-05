@@ -9,7 +9,7 @@ import lombok.Data;
  * @description:
  */
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class User {
     private Long id;
     private String name;

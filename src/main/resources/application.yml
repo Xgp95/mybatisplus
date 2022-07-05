@@ -5,8 +5,6 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     # 配置连接数据库信息
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-
     url: jdbc:mysql://172.16.0.188:3306/mybatis_plus?serverTimezone=UTC&characterEncoding=utf-8&useSSL=false
 #    url: jdbc:mysql://localhost:3306/mybatis_plus?serverTimezone=UTC&characterEncoding=utf-8&useSSL=false
     username: root
