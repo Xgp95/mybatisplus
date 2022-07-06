@@ -28,19 +28,20 @@ class MybatisplusApplicationTests {
 
     @Test
     void testInsert() {
-        user.setName("lisi");
+        user.setUserName("lisi");
         user.setAge(38);
         user.setEmail("zs@123.com");
         final int insert = userMapper.insert(user);
-        System.out.println(insert);
-        System.out.println(user.getId());
+//        System.out.println(insert);
+        System.out.println(user.getUId());
         List<User> userList = userMapper.selectList(null);
         userList.forEach(System.out::println);
     }
 
     @Test
     void testDelete() {
-        user.setId(1544220501914718210l);
+//        user.setId(1544220501914718210l);
+        user.setUId(6l);
         userMapper.deleteById(user);
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", "zhangsan");
@@ -55,8 +56,8 @@ class MybatisplusApplicationTests {
 
     @Test
     void testUpdate() {
-        user.setId(1544224248137056257l);
-        user.setName("zs");
+//        user.setId(1544224248137056257l);
+        user.setUserName("zs");
         user.setAge(18);
         user.setEmail("zs@123.com");
         userMapper.updateById(user);
