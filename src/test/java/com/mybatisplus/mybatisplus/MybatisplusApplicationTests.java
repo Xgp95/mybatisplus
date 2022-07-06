@@ -1,5 +1,6 @@
 package com.mybatisplus.mybatisplus;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mybatisplus.mybatisplus.bean.User;
 import com.mybatisplus.mybatisplus.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,9 @@ class MybatisplusApplicationTests {
     UserMapper userMapper;
 
     User user = new User();
+
+    QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+
     @Test
     void contextLoads() {
         List<User> userList = userMapper.selectList(null);
@@ -31,7 +35,7 @@ class MybatisplusApplicationTests {
         user.setUserName("lisi");
         user.setAge(38);
         user.setEmail("zs@123.com");
-        final int insert = userMapper.insert(user);
+        int insert = userMapper.insert(user);
 //        System.out.println(insert);
         System.out.println(user.getUId());
         List<User> userList = userMapper.selectList(null);
@@ -83,5 +87,98 @@ class MybatisplusApplicationTests {
     void testMyQuery() {
         Map<String, Object> map = userMapper.selectMapById(1);
         System.out.println(map);
+    }
+
+    @Test
+    void testWrapper() {
+//        查询用户名包含a 年龄20到30 邮箱不是null的用户
+        queryWrapper.like("name", "a")
+                .between("age", 20, 30)
+                .isNotNull("email");
+
+        List<User> userList = userMapper.selectList(queryWrapper);
+        userList.forEach(System.out::println);
+        System.out.println("#################");
+    }
+
+    @Test
+    void testWrapper1() {
+        //        按年龄降序查询 年龄相同id升序
+        queryWrapper.orderByDesc("age")
+                .orderByAsc("id");
+        List<User> userList = userMapper.selectList(queryWrapper);
+        userList.forEach(System.out::println);
+        System.out.println("#################");
+    }
+
+    @Test
+    void testWrapper2() {
+//        删除email是NULL id是7-10的用户
+        queryWrapper.isNull("email")
+                .between("id", 7, 10);
+        int deleteCount = userMapper.delete(queryWrapper);
+        List<User> userList = userMapper.selectList(null);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    void testWrapper3() {
+//        把年龄大于20且名字中有a 或者 邮箱是null的用户修改age为18 email为default@123.com
+        queryWrapper.ge("age", 20)
+                .like("name", "a")
+                .or()
+                .isNull("email");
+        user.setAge(18);
+        user.setEmail("default@123.com");
+        int update = userMapper.update(user, queryWrapper);
+        System.out.println("修改了" + update + "个");
+        List<User> userList = userMapper.selectList(null);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    void testWrapper4() {
+//        把年龄大于20且(名字中有a 或者 邮箱是null)的用户修改age为18 email为default@123.com
+        queryWrapper.gt("age", 20)
+                .and(i -> i.like("name", "a").or().isNull("email"));
+        user.setAge(18);
+        user.setEmail("default@123.com");
+        int update = userMapper.update(user, queryWrapper);
+        System.out.println("修改了" + update + "个");
+        List<User> userList = userMapper.selectList(null);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    void testWrapper5() {
+//        查询 name age id字段
+        queryWrapper.select("name","age","id");
+        List<Map<String, Object>> maps = userMapper.selectMaps(queryWrapper);
+        for (Map<String, Object> map : maps) {
+            System.out.println(map);
+        }
+    }
+
+    @Test
+    void testWrapper6() {
+//        查询id>=3的用户
+//        queryWrapper.ge("id", 3);
+//        List<User> userList = userMapper.selectList(queryWrapper);
+//        for (User user1 : userList) {
+//            System.out.println(user1);
+//        }
+
+//        查询id>3的用户
+        queryWrapper.inSql("id", "select id from user where id > 3");
+        List<User> userList = userMapper.selectList(queryWrapper);
+        for (User user1 : userList) {
+            System.out.println(user1);
+        }
     }
 }
