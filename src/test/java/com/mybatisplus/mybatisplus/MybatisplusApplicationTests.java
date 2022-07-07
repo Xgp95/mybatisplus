@@ -1,8 +1,12 @@
 package com.mybatisplus.mybatisplus;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mybatisplus.mybatisplus.bean.User;
 import com.mybatisplus.mybatisplus.mapper.UserMapper;
+import com.mybatisplus.mybatisplus.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,9 +22,17 @@ class MybatisplusApplicationTests {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    UserService userService;
+
     User user = new User();
 
     QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+
+    UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+
+    LambdaUpdateWrapper<User> userLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+    LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
 
     @Test
     void contextLoads() {
@@ -180,5 +192,56 @@ class MybatisplusApplicationTests {
         for (User user1 : userList) {
             System.out.println(user1);
         }
+    }
+
+    @Test
+    void testServiceImplSave() {
+        user.setUserName("zs");
+        user.setAge(22);
+        user.setEmail("zs@123.com");
+        userService.save(user);
+        queryWrapper.like("name", "z");
+        List<User> userList = userService.list(queryWrapper);
+        for (User user1 : userList) {
+            System.out.println(user1);
+        }
+    }
+
+    @Test
+    void testServiceImplRemove() {
+        queryWrapper.gt("age", 30);
+        userService.remove(queryWrapper);
+        userService.list().forEach(System.out::println);
+    }
+
+    @Test
+    void testServiceImplUpdate() {
+        user.setUserName("zhangsan");
+        user.setAge(22);
+        user.setEmail("zhangsan@123.com");
+//        queryWrapper.like("name", "z");
+//        userService.saveOrUpdate(user,queryWrapper);
+
+//        queryWrapper.in("id", 14,15);
+//        userService.update(user, queryWrapper);
+
+//        updateWrapper.set("name", "zs")
+//                .set("email", "zs@163.com")
+//                .like("email", "z");
+
+        userLambdaUpdateWrapper.set(User::getUserName,"ww")
+                .set(User::getEmail, "ww@163.com")
+                .set(User::getAge,26)
+//                .like(User::getEmail, "")
+                .and(i -> i.eq(User::getUId, 14));
+        userService.update(userLambdaUpdateWrapper);
+        List<User> userList = userService.list();
+        for (User user1 : userList) {
+            System.out.println(user1);
+        }
+    }
+
+    @Test
+    void testServiceImplQuery() {
     }
 }
