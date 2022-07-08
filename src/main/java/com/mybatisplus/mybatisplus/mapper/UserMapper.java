@@ -1,4 +1,5 @@
 package com.mybatisplus.mybatisplus.mapper;
+import java.util.Collection;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,4 +21,5 @@ public interface UserMapper extends BaseMapper<User> {
     Page<User> selectPageAgeGe(@Param("page") Page<User> page,@Param("age") Integer age);
 
     Page<User> selectPageAgeEq(@Param("page") Page<User> page,@Param("age") Integer age);
+
 }

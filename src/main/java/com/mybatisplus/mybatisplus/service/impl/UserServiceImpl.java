@@ -1,5 +1,6 @@
 package com.mybatisplus.mybatisplus.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mybatisplus.mybatisplus.bean.User;
 import com.mybatisplus.mybatisplus.mapper.UserMapper;
@@ -13,5 +14,6 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@DS("slave_1")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 }
