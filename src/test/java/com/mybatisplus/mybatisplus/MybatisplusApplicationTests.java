@@ -44,7 +44,7 @@ class MybatisplusApplicationTests {
 
     @Test
     void testInsert() {
-        user.setUserName("lisi");
+//        user.setUserName("lisi");
         user.setAge(38);
         user.setEmail("zs@123.com");
         int insert = userMapper.insert(user);
@@ -73,7 +73,7 @@ class MybatisplusApplicationTests {
     @Test
     void testUpdate() {
 //        user.setId(1544224248137056257l);
-        user.setUserName("zs");
+//        user.setUserName("zs");
         user.setAge(18);
         user.setEmail("zs@123.com");
         userMapper.updateById(user);
@@ -196,7 +196,7 @@ class MybatisplusApplicationTests {
 
     @Test
     void testServiceImplSave() {
-        user.setUserName("zs");
+//        user.setUserName("zs");
         user.setAge(22);
         user.setEmail("zs@123.com");
         userService.save(user);
@@ -216,7 +216,7 @@ class MybatisplusApplicationTests {
 
     @Test
     void testServiceImplUpdate() {
-        user.setUserName("zhangsan");
+//        user.setUserName("zhangsan");
         user.setAge(22);
         user.setEmail("zhangsan@123.com");
 //        queryWrapper.like("name", "z");
@@ -229,11 +229,11 @@ class MybatisplusApplicationTests {
 //                .set("email", "zs@163.com")
 //                .like("email", "z");
 
-        userLambdaUpdateWrapper.set(User::getUserName,"ww")
-                .set(User::getEmail, "ww@163.com")
-                .set(User::getAge,26)
-//                .like(User::getEmail, "")
-                .and(i -> i.eq(User::getUId, 14));
+////        userLambdaUpdateWrapper.set(User::getUserName,"ww")
+//                .set(User::getEmail, "ww@163.com")
+//                .set(User::getAge,26)
+////                .like(User::getEmail, "")
+//                .and(i -> i.eq(User::getUId, 14));
         userService.update(userLambdaUpdateWrapper);
         List<User> userList = userService.list();
         for (User user1 : userList) {

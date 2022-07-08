@@ -4,6 +4,29 @@
 
     <!--Map<String,Object> selectMapById(long id);-->
     <select id="selectMapById" resultType="map">
-        select id,name,age,email from user where id = #{id}
+        select id, name, age, email
+        from user
+        where id = #{id}
+    </select>
+
+    <resultMap id="MyUser" type="com.mybatisplus.mybatisplus.bean.User">
+        <id column="id" property="uId"/>
+        <result property="userName" column="name"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+    </resultMap>
+
+    <!--Page<User> selectPageAgeGe(@Param("page") Page<User> page,@Param("age") Integer age);-->
+    <select id="selectPageAgeGe" resultMap="MyUser">
+        select id, name, age, email
+        from user
+        where age >= #{age}
+    </select>
+
+    <!--Page<User> selectPageAgeEq(@Param("page") Page<User> page,@Param("age") Integer age);-->
+    <select id="selectPageAgeEq" resultMap="MyUser">
+        select id, name, age, email
+        from user
+        where age = #{age}
     </select>
 </mapper>
